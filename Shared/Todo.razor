@@ -1,0 +1,13 @@
+﻿<div id="@($"{IdPrefix}{Model.Id}")" class="todo">
+    <MudPaper title="@Model.Description">
+        <MudListItem Class="flex-grow-1" Text="@Model.Description" />
+        <MudDivider DividerType="DividerType.FullWidth" />
+    </MudPaper>
+</div>
+
+@code {
+    [CascadingParameter] TodoContainer Container { get; set; }
+    [Parameter, EditorRequired] public TodoModel Model { get; set; }
+
+    public const string IdPrefix = "todo-";
+}

@@ -1,0 +1,21 @@
+﻿<CascadingValue Value="this">
+    <MudContainer Class="todo-container d-flex gap-6">
+        @ChildContent
+    </MudContainer>
+</CascadingValue>
+
+@code {
+
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    [Parameter, EditorRequired] public List<TodoModel> Models { get; set; }
+    TodoModel? payload;
+    public TodoModel? Payload
+    {
+        get => payload;
+        set => Exchange = (payload = value)?.ListId;
+    }
+    public string? Exchange { get; set; }
+
+    public new void StateHasChanged() => base.StateHasChanged();
+}

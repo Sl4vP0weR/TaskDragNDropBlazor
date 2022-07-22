@@ -1,0 +1,22 @@
+﻿@page "/"
+
+<PageTitle>Index</PageTitle>
+
+<TodoContainer Models="Models" @ref="Container">
+    <TodoList Id="Done" />
+    <TodoList Id="Today" />
+    <TodoList Id="Tomorrow" />
+</TodoContainer>
+@code {
+    TodoContainer? Container;
+    readonly List<TodoModel> Models = new();
+
+    protected override void OnInitialized()
+    {
+        Models.Add(new() { Id = 1, Description = "Mow the lawn", ListId = "Done" });
+        Models.Add(new() { Id = 2, Description = "Go to the gym", ListId = "Today" });
+        Models.Add(new() { Id = 3, Description = "Call Ollie", ListId = "Tomorrow" });
+        Models.Add(new() { Id = 4, Description = "Fix bike tyre", ListId = "Today" });
+        Models.Add(new() { Id = 5, Description = "Finish blog post", ListId = "Tomorrow" });
+    }
+}

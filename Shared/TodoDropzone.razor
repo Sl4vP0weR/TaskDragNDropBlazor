@@ -1,0 +1,37 @@
+﻿<CascadingValue Value="this">
+    <ul @ondaddragstart="DragStartHandler" @ondaddrop="DropHandler" @ondaddragexchange="ExchangeHandler" id="@($"{IdPrefix}{List.Id}")" class="dropzone">
+        @ChildContent
+    </ul>
+</CascadingValue>
+
+@code {
+
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    [CascadingParameter] TodoContainer Container { get; set; }
+    [CascadingParameter] TodoList List { get; set; }
+
+    public const string IdPrefix = "dropzone-";
+
+    void DragStartHandler(ElementEventArgs args)
+    {
+        if (!int.TryParse(args.Id.RemovePrefix(Todo.IdPrefix), out var id))
+            return;
+        Container.Payload = Container.Models.FirstOrDefault(x => x.Id == id);
+    }
+    void DropHandler(ElementEventArgs args)
+    {
+        if (!int.TryParse(args.Id.RemovePrefix(Todo.IdPrefix), out var id))
+            return;
+        Container.Payload.ListId = Container.Exchange;
+        Container.StateHasChanged();
+    }
+    void ExchangeHandler(ElementEventArgs args)
+    {
+        if (Container.Payload is null)
+            return;
+        var id = args.Id.RemovePrefix(IdPrefix);
+        Container.Exchange = id;
+    }
+    protected override bool ShouldRender() => false;
+}

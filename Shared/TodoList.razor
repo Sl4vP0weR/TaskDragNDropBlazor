@@ -1,0 +1,33 @@
+﻿<CascadingValue Value="this">
+    <div id="@($"{IdPrefix}{Id}")" class="mud-paper todo-list ma-4 flex-grow-1">
+        @ChildContent
+        <MudList Clickable="false" Class="d-flex flex-column mud-height-full">
+            <MudListSubheader>@Id (@Models.Count)</MudListSubheader>
+            <MudDivider DividerType="DividerType.FullWidth" />
+            <TodoDropzone>
+                @foreach (var model in Models)
+                {
+                    <Todo Model="model" />
+                }
+            </TodoDropzone>
+        </MudList>
+    </div>
+</CascadingValue>
+
+@code {
+
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    [CascadingParameter] TodoContainer Container { get; set; }
+    [Parameter, EditorRequired] public string Id { get; set; }
+
+    public const string IdPrefix = "todo-list-";
+
+    readonly List<TodoModel> Models = new();
+
+    protected override void OnParametersSet()
+    {
+        Models.Clear();
+        Models.AddRange(Container.Models.Where(x => x.ListId == Id));
+    }
+}
